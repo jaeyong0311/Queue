@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX_QUEUE_SIZE 100
+
+// 큐 구조체 선언
+typedef struct {
+    int front;
+    int rear;
+    int data[MAX_QUEUE_SIZE];
+} Queue;
+
+// 큐 초기화 함수
+void initQueue(Queue *q) {
+    q->front = q->rear = 0;
+}
+
+// 큐 삽입 함수
+void enqueue(Queue *q, int item) {
+    if ((q->rear + 1) % MAX_QUEUE_SIZE == q->front) {
+        printf("Queue is Full!\n");
+        return;
+    }
+    q->rear = (q->rear + 1) % MAX_QUEUE_SIZE;
+    q->data[q->rear] = item;
+}
+
+// 큐 삭제 함수
+int dequeue(Queue *q) {
+    if (q->front == q->rear) {
+        printf("Queue is Empty!\n");
+        return -1;
+    }
+    q->front = (q->front + 1) % MAX_QUEUE_SIZE;
+    return q->data[q->front];
+}
+
+int main() {
+    Queue q;
+    initQueue(&q);
+    
+    // 삽입
+    enqueue(&q, 10);
+    enqueue(&q, 20);
+    enqueue(&q, 30);
+    printf("Queue: %d %d %d\n", q.data[(q.front + 1) % MAX_QUEUE_SIZE], 
+                                q.data[(q.front + 2) % MAX_QUEUE_SIZE], 
+                                q.data[(q.front + 3) % MAX_QUEUE_SIZE]);
+    
+    // 삭제
+    dequeue(&q);
+    dequeue(&q);
+    printf("Queue: %d\n", q.data[(q.front + 1) % MAX_QUEUE_SIZE]);
+    
+    return 0;
+}
+​
